@@ -61,13 +61,17 @@ def validate(text: str) -> None:
 
 
 def main() -> None:
-    validate(ENTRY)
+    # Validate the exact bytes the gate will read: the file holds
+    # ENTRY plus its trailing newline, so a 600-character ENTRY
+    # would otherwise ship as a 601-character file and fail.
+    content = ENTRY + "\n"
+    validate(content)
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_PATH.write_text(ENTRY + "\n", encoding="utf-8")
+    OUTPUT_PATH.write_text(content, encoding="utf-8")
     print(ENTRY)
     print()
     print(
-        f"[{word_count(ENTRY)} words, {len(ENTRY)} characters] "
+        f"[{word_count(content)} words, {len(content)} characters] "
         f"-> {OUTPUT_PATH}"
     )
 
